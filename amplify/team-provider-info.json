@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "reactawsamplify8bbb751c": {}
+      },
+      "api": {
+        "songs": {}
+      },
+      "storage": {
+        "songsStorage": {}
       }
     }
   }

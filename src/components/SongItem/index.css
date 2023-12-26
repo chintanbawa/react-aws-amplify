@@ -1,0 +1,22 @@
+.song {
+  display: flex;
+  flex-direction: column;
+  background: var(--secondary-2);
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-container {
+  padding: 10px;
+}
+
+.text {
+  font-size: 1.1rem;
+}
