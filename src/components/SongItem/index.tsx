@@ -6,7 +6,8 @@ import './index.css'
 //types
 import { Song } from 'API'
 
-const SongItem = ({ song, isPlaying, songURL, onSongStateToggle }: { song: Song, isPlaying: boolean, songURL: string | undefined; onSongStateToggle: () => void }) => {
+const SongItem = ({ song, isPlaying, songURL, onSongStateToggle, onEditClick }:
+    { song: Song, isPlaying: boolean, songURL: string | undefined; onSongStateToggle: () => void, onEditClick: (song: Song) => void }) => {
     return (
         <div className='song'>
             <div className="song-info">
@@ -14,8 +15,11 @@ const SongItem = ({ song, isPlaying, songURL, onSongStateToggle }: { song: Song,
                 <p className='text'>{song.description}</p>
                 <p className='text'>{song.like}</p>
                 <p className='text'>{song.owner}</p>
-                <button className={`${!isPlaying ? 'success' : 'danger'}`} onClick={onSongStateToggle}>{isPlaying ? 'Close Player' : 'Open Player'}</button>
-            </div >
+                <div className='actions'>
+                    <button onClick={() => onEditClick(song)}>Edit</button>
+                    <button className={`${!isPlaying ? 'success' : 'danger'}`} onClick={onSongStateToggle}>{isPlaying ? 'Close Player' : 'Open Player'}</button>
+                </div>
+            </div>
             {isPlaying && <div className='player-container'>
                 <ReactPlayer playing controls width='100%' height={50} url={songURL} />
             </div>}

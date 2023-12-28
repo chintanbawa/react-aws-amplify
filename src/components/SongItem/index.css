@@ -10,13 +10,18 @@
 .song-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+}
+
+.text {
+  flex: 1;
+  font-size: 1.1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
 }
 
 .player-container {
   padding: 10px;
-}
-
-.text {
-  font-size: 1.1rem;
 }

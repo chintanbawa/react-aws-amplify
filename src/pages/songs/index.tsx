@@ -6,7 +6,7 @@ import { getUrl } from 'aws-amplify/storage';
 import { listSongs } from 'graphql/queries';
 //components
 import SongItem from 'components/SongItem';
-import AddSong from './add-song';
+import AddEditSong from './add-edit-song';
 //styles
 import './index.css'
 //types
@@ -20,6 +20,7 @@ const client = generateClient({ authMode: 'apiKey' });
 const Songs = () => {
     const [songs, setSongs] = useState<Song[]>([]);
     const [showAddSong, setShowAddSong] = useState(false)
+    const [songToEdit, setSongToEdit] = useState<Song>()
     const [songIndex, setSongIndex] = useState(-1)
     const [songURL, setSongURL] = useState<string>()
 
@@ -64,20 +65,38 @@ const Songs = () => {
         <div className='songs'>
             <div className='header'>
                 <h2>Songs List</h2>
-                <button className='add-new-song' onClick={() => setShowAddSong(!showAddSong)}>{showAddSong ? 'Close' : 'Add New Song'}</button>
+                <button className='add-new-song' onClick={() => {
+                    setSongToEdit(undefined)
+                    setShowAddSong(!showAddSong)
+                }}>{showAddSong ? 'Close' : 'Add New Song'}</button>
             </div>
-            {showAddSong && <AddSong onSongAdded={(song) => setSongs([...songs, song])} />}
+            {showAddSong && <AddEditSong
+                songToEdit={songToEdit}
+                onSongAdded={(song) => setSongs([...songs, song])}
+                onSongUpdated={(song) => {
+                    const newSongs = [...songs]
+                    const index = newSongs.findIndex(s => s.id === song.id)
+                    if (index > -1) {
+                        newSongs[index] = song
+                        setSongs(newSongs)
+                    }
+                    setShowAddSong(false)
+                }} />}
             {songs.length === 0
                 ? <p className='no-items-found'>No songs found.</p>
                 : songs.map((song, index) =>
                     <SongItem
                         key={song.id}
                         song={song}
+                        isPlaying={songIndex === index}
+                        songURL={songURL}
                         onSongStateToggle={() =>
                             getAWSSongUrl(song.filePath, index)
                         }
-                        isPlaying={songIndex === index}
-                        songURL={songURL}
+                        onEditClick={(song) => {
+                            setSongToEdit(song)
+                            setShowAddSong(true)
+                        }}
                     />
                 )}
         </div>
